@@ -79,10 +79,14 @@ function randomWaterPic() {
 }
 
 async function schaf(msg, args) {
-    console.log("entering schaf...");
+    try {
     var url = await randomSheepPic();
+    if(!url) return schaf(msg, args);
     const pic = new Discord.MessageAttachment(url);
     msg.channel.send(pic);
+    }catch(e) {
+        msg.reply("Fehler beim scheren, bitte versuche es erneut");
+    }
 }
 
 function isValidImageURL(str){
@@ -90,15 +94,18 @@ function isValidImageURL(str){
     return !!str.match(/\w+\.(jpg|jpeg|gif|png|tiff|bmp)$/gi);
 }
 
+
+
 function randomSheepPic() {
     return new Promise(resolve => {
-        console.log("entering randomSheepPic");
+        
         sf.get("https://www.reddit.com/r/sheep/random.json?limit=1").then(res => {
             let data = res.body[0].data.children[0].data;
             console.log("got Post...");
             if(data.selftext === "" && !data.over_18 && isValidImageURL(data.url)) return resolve(data.url);
-            resolve(randomSheepPic());
+            resolve(false);
         });
+        
     });
 }
 
