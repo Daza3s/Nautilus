@@ -49,10 +49,11 @@ client.login(config.token);
 var befehle = {
     "sag": [(msg, args)=> { sag(msg, args) }, "sag <nachricht>"],
     "help": [(msg, args)=> { help(msg, args) }, "help (um diese Nachricht anzuzeigen)"],
-    "bild": [(msg, args)=> { bild(msg, args) }, "bild (um ein zufälliges Bild anzuzeigen)"],
+    "bild": [(msg, args)=> { bild(msg, args) }, "bild (um ein zufälliges Wasserbild anzuzeigen)"],
     "modus": [(msg, args)=> { setModus(msg, args) }, "modus <Fluss | Wasserfall | Meer>"],
     "join": [(msg, args)=> { join(msg, args) }, "join (läst den bot deinem Voicechat beitreten)"],
     "leave": [(msg, args)=> { proxyLeave(msg, args) }, "leave (kicked den bot aus dem Voicechat)"],
+    "schaf": [(msg, args)=> { schaf(msg, args) }, "schaf (um ein zufälliges Schafsbild anzuzeigen)"],
 }
 
 function sag(msg, args) {
@@ -73,6 +74,30 @@ function randomWaterPic() {
     return new Promise(resolve => {
         sf.get("https://www.reddit.com/r/waterporn/random.json?limit=1").then(res => {
             resolve(res.body[0].data.children[0].data.url);
+        });
+    });
+}
+
+async function schaf(msg, args) {
+    console.log("entering schaf...");
+    var url = await randomSheepPic();
+    const pic = new Discord.MessageAttachment(url);
+    msg.channel.send(pic);
+}
+
+function isValidImageURL(str){
+    if ( typeof str !== 'string' ) return false;
+    return !!str.match(/\w+\.(jpg|jpeg|gif|png|tiff|bmp)$/gi);
+}
+
+function randomSheepPic() {
+    return new Promise(resolve => {
+        console.log("entering randomSheepPic");
+        sf.get("https://www.reddit.com/r/sheep/random.json?limit=1").then(res => {
+            let data = res.body[0].data.children[0].data;
+            console.log("got Post...");
+            if(data.selftext === "" && !data.over_18 && isValidImageURL(data.url)) return resolve(data.url);
+            resolve(randomSheepPic());
         });
     });
 }
