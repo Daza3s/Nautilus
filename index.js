@@ -65,7 +65,7 @@ function help(msg, args) {
 }
 
 async function bild(msg, args) {
-    var url = await randomWaterPic();
+    var url = await randomWaterPic().catch((err) => { msg.reply("Fehler beim Datenfluss, bitte versuche es erneut"); });
     const pic = new Discord.MessageAttachment(url);
     msg.channel.send(pic);
 }
@@ -79,14 +79,10 @@ function randomWaterPic() {
 }
 
 async function schaf(msg, args) {
-    try {
-    var url = await randomSheepPic();
+    var url = await randomSheepPic().catch((err) => { msg.reply("Fehler beim scheren, bitte versuche es erneut"); });
     if(!url) return schaf(msg, args);
     const pic = new Discord.MessageAttachment(url);
     msg.channel.send(pic);
-    }catch(e) {
-        msg.reply("Fehler beim scheren, bitte versuche es erneut");
-    }
 }
 
 function isValidImageURL(str){
