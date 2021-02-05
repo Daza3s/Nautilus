@@ -2,6 +2,8 @@ const Discord = require('discord.js');
 const fs = require("fs");
 const sf = require("snekfetch");
 const ytdl = require("ytdl-core");
+const { searchImages } = require('pixabay-api');
+const { resolve } = require('path');
 
 const client = new Discord.Client();
 
@@ -78,8 +80,19 @@ function randomWaterPic() {
     });
 }
 
+function randomPicUrl(keyWord) {
+    return new Promise(resolve => {
+        resolve(searchImages(config.pix_token, keyWord,{per_page: 200})); //.then((r) => resolve(r.hits[Math.floor(Math.random()*200)].largeImageURL));
+    });
+}
+
 async function schaf(msg, args) {
-    var url = await randomSheepPic().catch((err) => { msg.reply("Fehler beim scheren, bitte versuche es erneut"); });
+    let url;
+    if(Math.random()*10 > 8) url = await randomSheepPic().catch((err) => { return msg.reply("Fehler beim scheren, bitte versuche es erneut"); });
+    if(!url) {
+        url = await randomPicUrl("sheep").catch((err) => { return msg.reply("Fehler beim scheren, bitte versuche es erneut"); });
+        url = url.hits[Math.floor(Math.random()*200)].largeImageURL;
+    }
     if(!url) return schaf(msg, args);
     const pic = new Discord.MessageAttachment(url);
     msg.channel.send(pic);
@@ -94,7 +107,6 @@ function isValidImageURL(str){
 
 function randomSheepPic() {
     return new Promise(resolve => {
-        
         sf.get("https://www.reddit.com/r/sheep/random.json?limit=1").then(res => {
             let data = res.body[0].data.children[0].data;
             console.log("got Post...");

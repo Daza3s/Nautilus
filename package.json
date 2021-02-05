@@ -11,11 +11,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "config.json": "0.0.4",
     "discord.js": "^12.5.1",
     "ffmpeg-static": "^4.2.7",
     "node-gyp": "^7.1.2",
     "node-pre-gyp": "^0.17.0",
     "opusscript": "0.0.7",
+    "pixabay-api": "^1.0.4",
     "snekfetch": "^4.0.4",
     "ytdl-core": "^4.4.4"
   }
