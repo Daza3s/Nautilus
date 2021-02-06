@@ -83,7 +83,7 @@ function randomWaterPic() {
 
 async function zeig(msg, args) {
     var url = await randomPicUrl(args[0]).catch((err) => { msg.reply("Fehler beim Datenfluss, bitte versuche es erneut"); });
-    url = url.hits[Math.floor(Math.random()*200)].largeImageURL;
+    url = url.hits[Math.floor(Math.random()*url.hits.length)].largeImageURL;
     const pic = new Discord.MessageAttachment(url);
     msg.channel.send(pic);
 }
