@@ -56,6 +56,7 @@ var befehle = {
     "join": [(msg, args)=> { join(msg, args) }, "join (läst den bot deinem Voicechat beitreten)"],
     "leave": [(msg, args)=> { proxyLeave(msg, args) }, "leave (kicked den bot aus dem Voicechat)"],
     "schaf": [(msg, args)=> { schaf(msg, args) }, "schaf (um ein zufälliges Schafsbild anzuzeigen)"],
+    "zeig": [(msg, args)=> { zeig(msg, args) }, "zeig <Word auf Englisch> (zeigt Bild zu dem Thema an)"],
 }
 
 function sag(msg, args) {
@@ -78,6 +79,13 @@ function randomWaterPic() {
             resolve(res.body[0].data.children[0].data.url);
         });
     });
+}
+
+async function zeig(msg, args) {
+    var url = await randomPicUrl(args[0]).catch((err) => { msg.reply("Fehler beim Datenfluss, bitte versuche es erneut"); });
+    url = url.hits[Math.floor(Math.random()*200)].largeImageURL;
+    const pic = new Discord.MessageAttachment(url);
+    msg.channel.send(pic);
 }
 
 function randomPicUrl(keyWord) {
