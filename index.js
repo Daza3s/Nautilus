@@ -21,7 +21,8 @@ var servers = {};
 var moduse = {
     "Fluss": "https://www.youtube.com/watch?v=1t7g690boao",
     "Wasserfall": "https://www.youtube.com/watch?v=kg3ElG-H7Wo",
-    "Meer": "https://www.youtube.com/watch?v=vPhg6sc1Mk4"
+    "Meer": "https://www.youtube.com/watch?v=vPhg6sc1Mk4",
+    "Föhn": "https://www.youtube.com/watch?v=c5CH09K_UGU"
 }
 
 
