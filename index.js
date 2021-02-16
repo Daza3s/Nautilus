@@ -211,8 +211,9 @@ client.on('voiceStateUpdate', async (oldMember, newMember) => {
     } else if(currentInfo && currentInfo.currentChannel) {
   
       console.log("Someone leaving channel...");
-      if(currentInfo.currentChannel.members.size === 1) leave(guildId);
-  
+      
+      if(!currentInfo.currentChannel.members.some(member=>!member.user.bot)) leave(guildId);
+
     }
 });
 
